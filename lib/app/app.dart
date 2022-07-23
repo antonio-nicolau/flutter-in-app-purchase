@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:in_app_purchase_flutter/app/features/home/page/home.page.dart';
+import 'package:in_app_purchase_flutter/app/hooks/use_in_app_purchase.dart';
 
-class MyApp extends StatelessWidget {
+class MyApp extends HookConsumerWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Initialize inAppPurchase earlier
+    useInAppPurchaseController(ref);
+
     return MaterialApp(
       title: 'Flutter in-app-purchase',
       home: HomePage(),

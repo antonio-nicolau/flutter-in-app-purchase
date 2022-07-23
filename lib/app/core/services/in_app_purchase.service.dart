@@ -5,11 +5,11 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:in_app_purchase_flutter/app/models/product.model.dart';
+import 'package:in_app_purchase_flutter/app/core/models/product.model.dart';
+import 'package:in_app_purchase_flutter/app/core/services/interfaces/in_app_purchase.service.interface.dart';
 import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
 import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
-import 'package:in_app_purchase_flutter/app/services/interfaces/in_app_purchase.service.interface.dart';
 
 final inAppPurchaseServiceprovider = Provider<IInAppPurchaseService>((ref) {
   return InAppPurchaseService(InAppPurchase.instance);

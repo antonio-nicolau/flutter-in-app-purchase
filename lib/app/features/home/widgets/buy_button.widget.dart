@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:in_app_purchase_flutter/app/models/product.model.dart';
-import 'package:in_app_purchase_flutter/app/services/in_app_purchase.service.dart';
-import 'package:in_app_purchase_flutter/app/states/payment.state.dart';
+import 'package:in_app_purchase_flutter/app/core/models/product.model.dart';
+import 'package:in_app_purchase_flutter/app/core/services/in_app_purchase.service.dart';
+import 'package:in_app_purchase_flutter/app/core/states/payment.state.dart';
 
 class BuyButton extends HookConsumerWidget {
   const BuyButton(this.product, {Key? key}) : super(key: key);

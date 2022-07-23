@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase_flutter/app/features/home/widgets/buy_button.widget.dart';
-import 'package:in_app_purchase_flutter/app/models/product.model.dart';
+import 'package:in_app_purchase_flutter/app/core/models/product.model.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard(this.product, {Key? key}) : super(key: key);

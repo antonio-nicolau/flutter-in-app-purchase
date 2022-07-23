@@ -5,7 +5,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:in_app_purchase_flutter/app/states/payment.state.dart';
+import 'package:in_app_purchase_flutter/app/core/states/payment.state.dart';
 import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';

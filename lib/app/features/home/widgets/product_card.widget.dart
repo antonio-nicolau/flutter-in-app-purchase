@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:in_app_purchase_flutter/app/features/home/widgets/buy_button.widget.dart';
 import 'package:in_app_purchase_flutter/app/models/product.model.dart';
 
 class ProductCard extends StatelessWidget {
@@ -38,10 +39,7 @@ class ProductCard extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 40),
-              ElevatedButton(
-                onPressed: () {},
-                child: Text('Buy \$ ${product.price}', style: Theme.of(context).textTheme.subtitle2),
-              )
+              BuyButton(product),
             ],
           ),
         ),

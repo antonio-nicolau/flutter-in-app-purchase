@@ -1,33 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:in_app_purchase_flutter/app/features/home/widgets/product_card.widget.dart';
 import 'package:in_app_purchase_flutter/app/models/product.model.dart';
-import 'package:in_app_purchase_flutter/app/services/in_app_purchase.service.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends HookConsumerWidget {
   HomePage({Key? key}) : super(key: key);
-
-  final InAppPurchaseService inAppPurchaseService = InAppPurchaseService();
 
   final products = [
     Product(
       title: 'Test subscription',
       price: 34.9,
-      productId: 'in.app.purchase.subscription',
+      productId: 'in.app.purchase.testesubscription',
       productType: ProductType.subscription,
     ),
     Product(
       title: 'Test product',
       price: 199.99,
-      productId: 'in.app.purchase.product',
+      productId: 'in.app.purchase.testeproduct',
       productType: ProductType.product,
     ),
   ];
 
   @override
-  Widget build(BuildContext context) {
-    inAppPurchaseService
-        .getProductsDetails(<String>{'in.app.purchase.testeproduct'}).then((value) => print('Result: ${value?.first.title}'));
-
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home page'),

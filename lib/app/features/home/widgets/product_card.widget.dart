@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase_flutter/app/features/home/widgets/buy_button.widget.dart';
 import 'package:in_app_purchase_flutter/app/core/models/product.model.dart';
+import 'package:in_app_purchase_flutter/app/features/home/widgets/restore_purchase_button.widget.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard(this.product, {Key? key}) : super(key: key);
@@ -39,7 +40,13 @@ class ProductCard extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 40),
-              BuyButton(product),
+              Row(
+                children: [
+                  BuyButton(product),
+                  const SizedBox(width: 15),
+                  const RestorePurchaseButton(),
+                ],
+              )
             ],
           ),
         ),

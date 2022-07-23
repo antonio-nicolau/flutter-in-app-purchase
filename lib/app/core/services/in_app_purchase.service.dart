@@ -68,6 +68,16 @@ class InAppPurchaseService implements IInAppPurchaseService {
     }
   }
 
+  @override
+  Future<bool> restorePurchase() async {
+    try {
+      await _inAppPurchase.restorePurchases(applicationUserName: packageName);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   Future<void> _finishIncompleteIosTransations() async {
     if (Platform.isIOS) {
       final transactions = await SKPaymentQueueWrapper().transactions();

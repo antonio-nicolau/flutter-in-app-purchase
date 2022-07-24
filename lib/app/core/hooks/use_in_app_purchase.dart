@@ -99,6 +99,11 @@ class _UseInAppPurchaseHookState extends HookState<void, _UseInAppPurchaseHook> 
     log('invalid purchase');
   }
 
+  /// handle canceled purchase. eg  user canceled.
+  void handleCanceledPurchase(PurchaseDetails purchaseDetails) {
+    log('purchased canceled by user');
+  }
+
   void updatePurchaseStatus(PurchaseDetails purchaseDetails, PaymentPurchaseStatus status) {
     hook.ref.read(productPurchasedStatusProvider(purchaseDetails.productID).state).state = status;
   }

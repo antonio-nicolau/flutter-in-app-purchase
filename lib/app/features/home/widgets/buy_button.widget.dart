@@ -13,6 +13,7 @@ class BuyButton extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final purchaseStatus = ref.watch(productPurchasedStatusProvider(product.productId));
     final productDetail = useState<ProductDetails?>(null);
+
     useEffect(
       () {
         Future.microtask(() async {
@@ -26,14 +27,18 @@ class BuyButton extends HookConsumerWidget {
       },
       [product],
     );
-    return ElevatedButton(
-      onPressed: () async {
-        if (purchaseStatus != PaymentPurchaseStatus.pending) {
-          if (productDetail.value != null) {
-            await ref.read(inAppPurchaseServiceprovider).purchase(product, productDetail.value!);
-          }
+
+    Future<void> executePurchase() async {
+      if (purchaseStatus != PaymentPurchaseStatus.pending) {
+        if (productDetail.value != null) {
+          await ref.read(inAppPurchaseServiceprovider).purchase(product, productDetail.value!);
         }
-      },
+      }
+      return;
+    }
+
+    return ElevatedButton(
+      onPressed: executePurchase,
       style: ButtonStyle(
         padding: MaterialStateProperty.all<EdgeInsets>(const EdgeInsets.all(10)),
       ),

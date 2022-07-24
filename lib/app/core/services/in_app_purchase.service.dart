@@ -8,6 +8,7 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase_flutter/app/core/models/product.model.dart';
 import 'package:in_app_purchase_flutter/app/core/services/interfaces/in_app_purchase.service.interface.dart';
 import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
+import 'package:in_app_purchase_android/billing_client_wrappers.dart';
 import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
 
@@ -42,30 +43,45 @@ class InAppPurchaseService implements IInAppPurchaseService {
 
   @override
   Future<bool> purchase(Product product, ProductDetails productDetails) async {
-    late PurchaseParam purchaseParam;
+    PurchaseParam? purchaseParam;
 
     try {
       if (Platform.isAndroid) {
+        GooglePlayPurchaseDetails? oldSubscription;
+
+        if (product.productType == ProductType.subscription) {
+          oldSubscription = _getOldSubscription(productDetails, <String, PurchaseDetails>{});
+        }
+
         purchaseParam = GooglePlayPurchaseParam(
           productDetails: productDetails,
           applicationUserName: packageName,
+          changeSubscriptionParam: oldSubscription != null
+              ? ChangeSubscriptionParam(
+                  oldPurchaseDetails: oldSubscription,
+                  prorationMode: ProrationMode.immediateWithTimeProration,
+                )
+              : null,
         );
-      } else {
+      } else if (Platform.isIOS) {
         purchaseParam = PurchaseParam(
           productDetails: productDetails,
           applicationUserName: packageName,
         );
       }
 
-      await _inAppPurchase.buyNonConsumable(purchaseParam: purchaseParam);
-      return true;
+      if (purchaseParam != null) {
+        await _inAppPurchase.buyNonConsumable(purchaseParam: purchaseParam);
+        return true;
+      }
     } on PlatformException catch (e) {
-      log('Error making ${Platform.isAndroid ? 'Android' : 'IOS'} purchase:$e', name: 'InAppPurchaseService.makePurchase()');
-      await _finishIncompleteIosTransations();
+      log('Error making ${Platform.isAndroid ? 'Android' : 'IOS'} purchase:$e');
+      if (Platform.isIOS) await _finishIncompleteIosTransations();
       return false;
     } catch (e) {
       return false;
     }
+    return false;
   }
 
   @override
@@ -78,15 +94,28 @@ class InAppPurchaseService implements IInAppPurchaseService {
     }
   }
 
-  Future<void> _finishIncompleteIosTransations() async {
-    if (Platform.isIOS) {
-      final transactions = await SKPaymentQueueWrapper().transactions();
-      for (final skPaymentTransactionWrapper in transactions) {
-        skPaymentTransactionWrapper.payment.productIdentifier;
-        SKPaymentQueueWrapper().finishTransaction(skPaymentTransactionWrapper);
-        log('finishing imcompleted IOS transation');
-      }
+  GooglePlayPurchaseDetails? _getOldSubscription(ProductDetails productDetails, Map<String, PurchaseDetails>? purchases) {
+    // This is just to demonstrate a subscription upgrade or downgrade.
+    // This method assumes that you get your old subscription id from your backend or somewhere else
+    // Please remember to replace the logic of finding the old subscription Id as per your app.
+    // The old subscription is only required on Android since Apple handles this internally
+    // by using the subscription group feature in ItunesConnect.
+
+    const oldSubscriptionId = 'old.subscription.teste';
+
+    if (purchases?.containsKey(oldSubscriptionId) == true) {
+      return purchases?[oldSubscriptionId] as GooglePlayPurchaseDetails;
     }
+    return null;
+  }
+}
+
+Future<void> _finishIncompleteIosTransations() async {
+  final transactions = await SKPaymentQueueWrapper().transactions();
+  for (final skPaymentTransactionWrapper in transactions) {
+    skPaymentTransactionWrapper.payment.productIdentifier;
+    SKPaymentQueueWrapper().finishTransaction(skPaymentTransactionWrapper);
+    log('finishing imcompleted IOS transation');
   }
 }
 

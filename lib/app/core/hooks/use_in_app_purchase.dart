@@ -1,6 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -89,8 +90,26 @@ class _UseInAppPurchaseHookState extends HookState<void, _UseInAppPurchaseHook> 
 
   /// IMPORTANT!! Always verify a purchase before delivering the product.
   /// For the purpose of an example, we directly return true but always verify it on backend
+  /// Here you can see how to get Data to send to backend to validate the purcahse
+  /// for Android and IOS
+  /// GooglePlay [https://developers.google.com/android-publisher/api-ref/rest/v3/purchases.products]
+  /// AppleStore [https://developer.apple.com/documentation/storekit/in-app_purchase/original_api_for_in-app_purchase/validating_receipts_with_the_app_store]
   Future<bool> verifyPurchase(PurchaseDetails purchaseDetails) async {
     log('verifying purchase');
+
+    if (Platform.isAndroid) {
+      // final localDataVerification = json.decode(purchaseDetails.verificationData.localVerificationData) as Map<String, dynamic>;
+      // final orderId = localDataVerification['orderId'] as String;
+      // final productId = localDataVerification['productId'] as String;
+      // final packageName = localDataVerification['packageName'] as String;
+      // final token = localDataVerification['purchaseToken'] as String;
+    } else if (Platform.isIOS) {
+      // final appStorePurchaseDetails = purchaseDetails as AppStorePurchaseDetails;
+      // final paymentToken = appStorePurchaseDetails.verificationData.localVerificationData;
+      // final transitionId = appStorePurchaseDetails.skPaymentTransaction.originalTransaction?.transactionIdentifier;
+      // final storeId = purchaseDetails.productID;
+    }
+
     return Future<bool>.value(true);
   }
 

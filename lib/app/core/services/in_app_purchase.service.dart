@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:in_app_purchase_flutter/app/core/constants/constants.dart';
 import 'package:in_app_purchase_flutter/app/core/models/product.model.dart';
 import 'package:in_app_purchase_flutter/app/core/services/interfaces/in_app_purchase.service.interface.dart';
 import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
@@ -18,7 +19,6 @@ final inAppPurchaseServiceprovider = Provider<IInAppPurchaseService>((ref) {
 
 class InAppPurchaseService implements IInAppPurchaseService {
   final InAppPurchase _inAppPurchase;
-  final String packageName = 'in.app.purchase.flutter.in_app_purchase_flutter';
 
   InAppPurchaseService(this._inAppPurchase);
 
